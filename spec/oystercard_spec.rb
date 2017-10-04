@@ -21,14 +21,20 @@ describe Oystercard do
   end
 
   it '#card in use' do
+    subject.top_up(1)
     subject.tap_in
     expect(oystercard).to be_in_journey
   end
 
   it '#card not in use' do
+    subject.top_up(1)
     subject.tap_in
     subject.tap_out
     expect(oystercard).to_not be_in_journey
+  end
+
+  it '#tap_in raises error if balance below minimum' do
+    expect { oystercard.tap_in }.to raise_error('Insufficient funds')
   end
 
 end
