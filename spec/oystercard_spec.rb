@@ -34,7 +34,7 @@ describe Oystercard do
       expect { oystercard.tap_in(station) }.to raise_error('Insufficient funds')
     end
 
-    it 'remembers the entry' do
+    it 'remembers the entry station' do
       subject.top_up(Oystercard::MINIMUM_BALANCE)
       oystercard.tap_in(station)
       expect(oystercard.entry_station).to eq (station)
@@ -53,6 +53,13 @@ describe Oystercard do
 
     it '#deducts mimumum_balance' do
     expect { oystercard.tap_out}.to change {oystercard.balance}.by(- Oystercard::MINIMUM_BALANCE)
+  end
+
+  it 'forgets the entry station' do
+    subject.top_up(Oystercard::MINIMUM_BALANCE)
+    oystercard.tap_in(station)
+    subject.tap_out
+    expect(oystercard.entry_station).to eq nil
   end
   end
 end
