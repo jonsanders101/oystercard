@@ -21,12 +21,6 @@ describe Oystercard do
     end
   end
 
-  describe "#deduct" do
-    it 'deducts money from balance' do
-      expect{ oystercard.deduct(10)}.to change{oystercard.balance}.by(-10)
-    end
-  end
-
   describe "#tap_in" do
 
     it '#card in use' do
@@ -50,7 +44,8 @@ describe Oystercard do
       expect(oystercard).to_not be_in_journey
     end
 
+    it '#deducts mimumum_balance' do
+    expect { oystercard.tap_out}.to change {oystercard.balance}.by(- Oystercard::MINIMUM_BALANCE)
   end
-
-
+  end
 end
