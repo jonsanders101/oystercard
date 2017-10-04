@@ -40,6 +40,13 @@ describe Oystercard do
       expect(oystercard.entry_station).to eq (station)
     end
 
+    it '#creates one journey' do
+      subject.top_up(Oystercard::MINIMUM_BALANCE)
+      subject.tap_in(station)
+      subject.tap_out(station)
+      expect(oystercard.journey_history.length).to eq 1
+      end
+
   end
 
   describe "#tap_out" do
@@ -47,19 +54,31 @@ describe Oystercard do
     it '#card not in use' do
       subject.top_up(Oystercard::MINIMUM_BALANCE)
       subject.tap_in(station)
-      subject.tap_out
+      subject.tap_out(station)
       expect(oystercard).to_not be_in_journey
     end
 
     it '#deducts mimumum_balance' do
-    expect { oystercard.tap_out}.to change {oystercard.balance}.by(- Oystercard::MINIMUM_BALANCE)
+    subject.top_up(Oystercard::MINIMUM_BALANCE)
+    subject.tap_in(station)
+    expect { oystercard.tap_out(station)}.to change {oystercard.balance}.by(- Oystercard::MINIMUM_BALANCE)
   end
 
   it 'forgets the entry station' do
     subject.top_up(Oystercard::MINIMUM_BALANCE)
     oystercard.tap_in(station)
-    subject.tap_out
+    subject.tap_out(station)
     expect(oystercard.entry_station).to eq nil
   end
+
+  it '#records exit station' do
+    subject.top_up(Oystercard::MINIMUM_BALANCE)
+    subject.tap_in(station)
+    expect(oystercard.tap_out(station)).to eq oystercard.journey_history[-1][:exit_station]
+  end
+  end
+
+  it '#has no journey history by default' do
+  expect(oystercard.journey_history).to eq []
   end
 end
