@@ -20,4 +20,7 @@ describe Oystercard do
     expect{ oystercard.deduct(10)}.to change{oystercard.balance}.by(-10)
   end
 
+  it '#card in use' do
+    expect{ oystercard.tap_in}.to change{oystercard.status}.from(false).to(true)
+  end
 end
