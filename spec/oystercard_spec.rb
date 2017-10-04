@@ -1,6 +1,7 @@
 require 'oystercard'
 describe Oystercard do
   subject(:oystercard) { described_class.new }
+  let(:station) { double(:station) }
 
 
   describe "#top_up" do
@@ -25,12 +26,18 @@ describe Oystercard do
 
     it '#card in use' do
       subject.top_up(Oystercard::MINIMUM_BALANCE)
-      subject.tap_in
+      subject.tap_in(station)
       expect(oystercard).to be_in_journey
     end
 
     it '#tap_in raises error if balance below minimum' do
-      expect { oystercard.tap_in }.to raise_error('Insufficient funds')
+      expect { oystercard.tap_in(station) }.to raise_error('Insufficient funds')
+    end
+
+    it 'remembers the entry' do
+      subject.top_up(Oystercard::MINIMUM_BALANCE)
+      oystercard.tap_in(station)
+      expect(oystercard.entry_station).to eq (station)
     end
 
   end
@@ -39,7 +46,7 @@ describe Oystercard do
 
     it '#card not in use' do
       subject.top_up(Oystercard::MINIMUM_BALANCE)
-      subject.tap_in
+      subject.tap_in(station)
       subject.tap_out
       expect(oystercard).to_not be_in_journey
     end
