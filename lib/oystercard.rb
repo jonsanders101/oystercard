@@ -3,6 +3,7 @@ class Oystercard
 
   DEFAULT_BALANCE = 0
   MAXIMUM_BALANCE = 90
+  MINIMUM_BALANCE = 1
 
 
   def initialize(balance = DEFAULT_BALANCE)
@@ -25,7 +26,7 @@ class Oystercard
   end
 
   def tap_in
-    fail 'Insufficient funds' if @balance < 1
+    fail 'Insufficient funds' if @balance < MINIMUM_BALANCE
     @status = true
   end
 
