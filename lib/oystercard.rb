@@ -20,7 +20,7 @@ class Oystercard
     @balance -= @amount
   end
 
-  def status
+  def in_journey?
     @status
   end
 
@@ -28,4 +28,7 @@ class Oystercard
     @status = true
   end
 
+  def tap_out
+    @status = false
+  end
 end

@@ -21,6 +21,12 @@ describe Oystercard do
   end
 
   it '#card in use' do
-    expect{ oystercard.tap_in}.to change{oystercard.status}.from(false).to(true)
+    expect{ oystercard.tap_in}.to change{oystercard.in_journey?}.from(false).to(true)
   end
+
+  it '#card not in use' do
+    subject.tap_in
+    expect{ oystercard.tap_out}.to change{oystercard.in_journey?}.from(true).to(false)
+  end
+
 end
