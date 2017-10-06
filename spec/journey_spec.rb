@@ -22,6 +22,10 @@ describe Journey do
       expect { journey.tap_in(station) }.to change{ oystercard.journey_history[-1][:entry_station] }.from(nil).to(station)
     end
 
+    it 'expects to see that initialisation adds new element in journey_history array ' do
+      expect { journey }.to change{ oystercard.journey_history.length }.by(1)
+    end
+
   end
 
 end
