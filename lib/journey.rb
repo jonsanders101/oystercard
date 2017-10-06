@@ -9,10 +9,10 @@ class Journey
 
   def tap_in(station)
     fail 'Insufficient funds' if @oystercard.insufficient_balance?
-    # @entry_station = station
-    # @oystercard.deduct(Oystercard::PENALTY_FARE)
+    @entry_station = station
+    @oystercard.deduct(Oystercard::PENALTY_FARE)
     #
-    # @oystercard.journey_history[-1][:entry_station] = @entry_station
+     @oystercard.journey_history[-1][:entry_station] = @entry_station
   end
 #
 #   def tap_out(station)
